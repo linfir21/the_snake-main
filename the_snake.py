@@ -154,11 +154,8 @@ class Snake(GameObject):
 
         self.positions.insert(0, new_position)
 
-        # Удаляем хвост, если змейка не выросла
-        if len(self.positions) > self.length:
-            self.last = self.positions.pop()
-        else:
-            self.last = None
+        # Всегда удаляем последний элемент
+        self.last = self.positions.pop()
 
         return new_position
 
@@ -243,15 +240,15 @@ def main():
             snake.reset(random_direction=True)
             apple.randomize_position(snake.positions)
 
-        # Проверка съедения яблока
-        if new_head_position == apple.position:
+        # Проверка съедения яблока (только если не было столкновения)
+        elif new_head_position == apple.position:
             snake.grow()
             apple.randomize_position(snake.positions)
 
         # Отрисовка
         apple.draw()
         snake.draw()
-        draw_score(snake.length)
+        draw_score(len(snake.positions))  # Используем длину списка positions
 
         pg.display.update()
 
